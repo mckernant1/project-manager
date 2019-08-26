@@ -4,24 +4,34 @@ extern crate clap;
 extern crate json;
 
 mod setup;
+mod subcommands;
 
-use clap::{App, AppSettings};
-use std::{env, io, fs};
-use std::fs::File;
-use std::io::{Read, stdin, stdout, Write};
+use clap::{App, AppSettings, ArgMatches};
 use json::JsonValue;
-use setup::get_settings_json;
-
+use subcommands::{pull, list, add, delete, clone};
+use setup::SettingsFile;
 
 
 fn main() {
-    let settings_json = get_settings_json();
-
-
+    let mut settings_file = SettingsFile::new();
     let yaml = load_yaml!("cli.yml");
     let matches = App::from_yaml(yaml)
         .setting(AppSettings::ArgRequiredElseHelp)
         .get_matches();
+    call_subcommands(matches, settings_file)
 }
 
+fn call_subcommands(matches: ArgMatches, settings_file: SettingsFile) {
+    if matches.is_present("clone") {
+        clone(matches, settings_file)
+    } else if matches.is_present("pull") {
+        pull(matches, settings_file)
+    } else if matches.is_present("list") {
+        list(matches, settings_file)
+    } else if matches.is_present("add") {
+        add(matches, settings_file)
+    } else if matches.is_present("delete") {
+        delete(matches, settings_file)
+    }
+}
 
