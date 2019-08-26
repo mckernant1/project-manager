@@ -1,0 +1,33 @@
+name: Global Git
+version: 0.0.1
+author: Tom McKernan <tmeaglei@gmail.com>
+about: A global git manager
+subcommands:
+  - clone:
+      about: Clone repository to default directory
+      args:
+        - LINK:
+            required: true
+            help: The repo to clone
+  - pull:
+      about: Pulls the specific repo by name. No name pulls all repos
+      args:
+        - NAME:
+            required: true
+            help: The name of the repo
+  - list:
+      about: list all of the directories managed by global git
+  - add:
+      about: Add a directory to the list maintained by global-git
+      args:
+        - DIRECTORY:
+            required: true
+            help: The directory of the git repo to add
+  - delete:
+      about: remove the repo from the list maintained by global git
+      args:
+        - remove-dir:
+            short: d
+            long: remove-dir
+            help: delete the directory specified
+            takes_value: false
