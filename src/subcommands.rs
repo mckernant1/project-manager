@@ -1,10 +1,8 @@
 use clap::ArgMatches;
-use json::JsonValue;
 use std::process::{Command, Stdio};
 use crate::setup::SettingsFile;
-use std::path::{PathBuf, Path};
+use std::path::{PathBuf};
 use std::fs;
-use std::ffi::OsStr;
 
 pub fn clone(matches: ArgMatches, settings_file: SettingsFile) {
     let repo_string = matches
@@ -72,7 +70,7 @@ pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {
     }
 }
 
-pub fn list(matches: ArgMatches, settings_file: SettingsFile) {
+pub fn list(_matches: ArgMatches, settings_file: SettingsFile) {
     let repos = settings_file.list_repos();
     for member in repos.members() {
         println!("{}", member["name"].to_string());

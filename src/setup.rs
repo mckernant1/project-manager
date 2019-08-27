@@ -2,7 +2,6 @@ use json::JsonValue;
 use std::{env, fs};
 use std::fs::File;
 use std::io::{Read, stdout, Write, stdin};
-use std::path::PathBuf;
 
 #[derive(Clone)]
 pub struct SettingsFile {
@@ -15,12 +14,10 @@ impl SettingsFile {
 
         let settings_file_res = File::open(settings_file_path.clone());
 
-        let mut settings_file_mut = match settings_file_res {
+        match settings_file_res {
             Ok(t) => t,
             Err(_) => create_settings_file(settings_file_path.clone())
         };
-
-        let settings_json = get_settings_json(&mut settings_file_mut);
 
         return SettingsFile {
             settings_file_path: settings_file_path.clone(),
@@ -67,7 +64,7 @@ impl SettingsFile {
 
         for member in members {
             if member["name"].as_str().unwrap() != repo_name {
-                new_repos.push(member.clone());
+                new_repos.push(member.clone()).unwrap();
             }
         }
 

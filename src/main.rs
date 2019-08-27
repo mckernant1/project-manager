@@ -7,18 +7,18 @@ mod setup;
 mod subcommands;
 
 use clap::{App, AppSettings, ArgMatches};
-use json::JsonValue;
 use subcommands::{pull, list, add, delete, clone};
 use setup::SettingsFile;
 
 
 fn main() {
-    let mut settings_file = SettingsFile::new();
+    let settings_file = SettingsFile::new();
     let yaml = load_yaml!("cli.yml");
     let matches = App::from_yaml(yaml)
         .setting(AppSettings::ArgRequiredElseHelp)
         .get_matches();
     call_subcommands(matches, settings_file)
+
 }
 
 fn call_subcommands(matches: ArgMatches, settings_file: SettingsFile) {
