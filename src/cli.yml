@@ -1,5 +1,5 @@
 name: Global Git
-version: 0.1.1
+version: 0.1.2
 author: Tom McKernan <tmeaglei@gmail.com>
 about: A global git manager
 subcommands:
