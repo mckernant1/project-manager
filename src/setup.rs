@@ -40,7 +40,7 @@ impl SettingsFile {
 
         let mut repos_mut = repos.clone();
 
-        if !repos_mut.contains("repos") {
+        if !repos_mut["repos"].is_array() {
             repos_mut["repos"] = array![];
         }
 

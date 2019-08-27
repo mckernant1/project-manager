@@ -28,10 +28,10 @@ fn call_subcommands(matches: ArgMatches, settings_file: SettingsFile) {
         pull(matches, settings_file)
     } else if matches.is_present("list") {
         list(matches, settings_file)
+    } else if matches.is_present("add") {
+        add(matches, settings_file)
     }
-//    } else if matches.is_present("add") {
-//        add(matches, settings_file)
-//    } else if matches.is_present("delete") {
+//    else if matches.is_present("delete") {
 //        delete(matches, settings_file)
 //    }
 }

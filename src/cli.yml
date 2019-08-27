@@ -20,7 +20,7 @@ subcommands:
   - add:
       about: Add a directory to the list maintained by global-git
       args:
-        - DIRECTORY:
+        - PATH:
             required: true
             help: The directory of the git repo to add
   - delete:
@@ -31,3 +31,6 @@ subcommands:
             long: remove-dir
             help: delete the directory specified
             takes_value: false
+        - NAME:
+            required: true
+            help: The name of the repo to delete
