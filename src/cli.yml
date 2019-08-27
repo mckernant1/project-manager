@@ -13,7 +13,7 @@ subcommands:
       about: Pulls the specific repo by name. No name pulls all repos
       args:
         - NAME:
-            required: true
+            required: false
             help: The name of the repo
   - list:
       about: list all of the directories managed by global git
