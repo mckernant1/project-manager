@@ -28,7 +28,7 @@ impl SettingsFile {
     }
 
     pub fn add_repo(self, repo_path: &str, repo_name: &str) {
-        let repos = get_settings_json(
+        let settings_json = get_settings_json(
             &mut File::open(
                 self.settings_file_path.clone()
             ).unwrap()
@@ -38,7 +38,7 @@ impl SettingsFile {
             "path" => repo_path
         };
 
-        let mut repos_mut = repos.clone();
+        let mut repos_mut = settings_json.clone();
 
         if !repos_mut["repos"].is_array() {
             repos_mut["repos"] = array![];
@@ -47,6 +47,33 @@ impl SettingsFile {
         repos_mut["repos"].push(repo).unwrap();
 
         let settings_string = json::stringify(repos_mut);
+
+        fs::write(
+            self.settings_file_path.clone(),
+            settings_string.as_bytes(),
+        ).unwrap();
+    }
+
+    pub fn delete_repo(self, repo_name: &str) {
+        let settings_json = get_settings_json(
+            &mut File::open(
+                self.settings_file_path.clone()
+            ).unwrap()
+        );
+        let mut settings_mut = settings_json.clone();
+
+        let members = settings_mut["repos"].members();
+        let mut new_repos = array!();
+
+        for member in members {
+            if member["name"].as_str().unwrap() != repo_name {
+                new_repos.push(member.clone());
+            }
+        }
+
+        settings_mut["repos"] = new_repos;
+
+        let settings_string = json::stringify(settings_mut);
 
         fs::write(
             self.settings_file_path.clone(),
@@ -67,6 +94,20 @@ impl SettingsFile {
     pub fn get_settings_json(self) -> JsonValue {
         let mut file = File::open(self.settings_file_path).unwrap();
         get_settings_json(&mut file)
+    }
+
+    pub fn get_repo_by_name(self, repo_name: &str) -> JsonValue {
+        let settings_json = get_settings_json(
+            &mut File::open(
+                self.settings_file_path.clone()
+            ).unwrap()
+        );
+
+        let repo = settings_json["repos"].members().find(
+            |r| {
+                r["name"].as_str().unwrap() == repo_name
+            }).unwrap();
+        return (*repo).clone();
     }
 }
 

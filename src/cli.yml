@@ -23,7 +23,7 @@ subcommands:
         - PATH:
             required: true
             help: The directory of the git repo to add
-  - delete:
+  - rm:
       about: remove the repo from the list maintained by global git
       args:
         - remove-dir:

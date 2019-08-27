@@ -92,7 +92,7 @@ pub fn add(matches: ArgMatches, settings_file: SettingsFile) {
     let repo_name =
         path_string.chars()
             .rev()
-            .take_while(|c| { c != &'/' } )
+            .take_while(|c| { c != &'/' })
             .collect::<String>()
             .chars()
             .rev()
@@ -100,10 +100,21 @@ pub fn add(matches: ArgMatches, settings_file: SettingsFile) {
 
     settings_file.add_repo(
         path_string,
-        repo_name.as_str()
+        repo_name.as_str(),
     );
 }
 
 pub fn delete(matches: ArgMatches, settings_file: SettingsFile) {
+    let repo_name = matches
+        .subcommand_matches("rm").unwrap()
+        .value_of("NAME").unwrap();
 
+    if matches.subcommand_matches("rm").unwrap()
+        .is_present("remove-dir") {
+        let repo = settings_file.clone().get_repo_by_name(repo_name);
+        let repo_path = repo["path"].as_str().unwrap();
+        fs::remove_dir_all(repo_path).unwrap();
+    }
+
+    settings_file.clone().delete_repo(repo_name)
 }
