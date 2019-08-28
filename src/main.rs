@@ -7,7 +7,7 @@ mod setup;
 mod subcommands;
 
 use clap::{App, AppSettings, ArgMatches};
-use subcommands::{pull, list, add, delete, clone};
+use subcommands::{pull, list, add, delete, clone, cmd, cmds};
 use setup::SettingsFile;
 
 
@@ -32,6 +32,10 @@ fn call_subcommands(matches: ArgMatches, settings_file: SettingsFile) {
         add(matches, settings_file)
     } else if matches.is_present("rm") {
         delete(matches, settings_file)
+    } else if matches.is_present("cmd") {
+        cmd(matches, settings_file)
+    } else if matches.is_present("cmds") {
+        cmds(matches, settings_file)
     }
 }
 

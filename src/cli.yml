@@ -1,5 +1,5 @@
-name: Global Git
-version: 0.1.3
+name: Project Manager
+version: 0.2.0
 author: Tom McKernan <tmeaglei@gmail.com>
 about: A global git manager
 subcommands:
@@ -12,9 +12,9 @@ subcommands:
   - pull:
       about: Pulls the specific repo by name. No name pulls all repos
       args:
-        - NAME:
+        - PROJ_NAME:
             required: false
-            help: The name of the repo
+            help: The name of the project
   - list:
       about: list all of the directories managed by global git
       args:
@@ -37,6 +37,21 @@ subcommands:
             long: remove-dir
             help: delete the directory specified
             takes_value: false
-        - NAME:
+        - PROJ_NAME:
             required: true
-            help: The name of the repo to delete
+            help: The name of the project to delete
+  - cmd:
+      about: runs given shell script in project directory. If command doesnt exists you will be prompted for it.
+      args:
+        - PROJ_NAME:
+            required: true
+            help: The name of the project
+        - CMD_NAME:
+            required: true
+            help: name of the command to run
+  - cmds:
+      about: lists commands for a given project
+      args:
+        - PROJ_NAME:
+            required: true
+            help: The name of the project

@@ -1,6 +1,6 @@
 [package]
-name = "gblg"
-version = "0.1.3"
+name = "pm"
+version = "0.2.0"
 authors = ["Tom McKernan <tmeaglei@gmail.com>"]
 edition = "2018"
 

@@ -10,7 +10,7 @@ pub struct SettingsFile {
 
 impl SettingsFile {
     pub fn new() -> SettingsFile {
-        let settings_file_path = format!("{}/.gg.json", env::var("HOME").unwrap());
+        let settings_file_path = format!("{}/.pm.json", env::var("HOME").unwrap());
 
         let settings_file_res = File::open(settings_file_path.clone());
 
@@ -24,16 +24,12 @@ impl SettingsFile {
         };
     }
 
-    pub fn add_repo(self, repo_path: &str, repo_name: &str) {
+    pub fn add_repo(self, new_repo: JsonValue) {
         let settings_json = get_settings_json(
             &mut File::open(
                 self.settings_file_path.clone()
             ).unwrap()
         );
-        let repo = object! {
-            "name" => repo_name,
-            "path" => repo_path
-        };
 
         let mut repos_mut = settings_json.clone();
 
@@ -41,7 +37,17 @@ impl SettingsFile {
             repos_mut["repos"] = array![];
         }
 
-        repos_mut["repos"].push(repo).unwrap();
+        let mut new_repos = array![];
+
+        for repo in repos_mut["repos"].members() {
+            if repo["name"] != new_repo["name"] {
+                new_repos.push(repo.clone()).unwrap();
+            } else {
+                new_repos.push(new_repo.clone());
+            }
+        }
+
+        repos_mut["repos"] = new_repos;
 
         let settings_string = json::stringify(repos_mut);
 
