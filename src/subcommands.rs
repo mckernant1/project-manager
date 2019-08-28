@@ -1,5 +1,5 @@
 use clap::ArgMatches;
-use std::process::{Command, Stdio};
+use std::process::{Command, Stdio, Child};
 use crate::setup::SettingsFile;
 use std::path::{PathBuf};
 use std::fs;
@@ -17,11 +17,10 @@ pub fn clone(matches: ArgMatches, settings_file: SettingsFile) {
     let repo_dir = format!("{}/{}", default_dir, repo_name);
     println!("Cloning {} to {}\n", repo_string, repo_dir);
 
-    let mut child = Command::new("git")
-        .arg("clone")
-        .arg(repo_string)
-        .arg(repo_dir.clone())
-        .spawn().unwrap();
+    let mut child = exec_git(
+        vec!["clone", repo_string.as_str(), repo_dir.clone().as_str()],
+        Option::from(Stdio::piped())
+    );
     child.wait().unwrap();
     settings_file.clone().add_repo(
         repo_dir.clone().as_str(),
@@ -41,11 +40,7 @@ pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {
             m["name"].to_string() == repo_name
         }).unwrap()["path"].to_string();
         println!("Pulling: {}", repo_name);
-        Command::new("git")
-            .arg("-C")
-            .arg(path)
-            .arg("pull")
-            .spawn().unwrap()
+        exec_git(vec!["-C", path.as_str(), "pull"], Option::None)
             .wait().unwrap();
         println!("Done pulling: {}", repo_name)
     } else {
@@ -54,12 +49,7 @@ pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {
             println!("Pulling: {}", member["name"].clone().to_string());
             child_list.push((
                 member["name"].to_string(),
-                Command::new("git")
-                    .arg("-C")
-                    .arg(member["path"].to_string())
-                    .arg("pull")
-                    .stdout(Stdio::null())
-                    .spawn().unwrap()
+                exec_git(vec!["-C", member["path"].as_str().unwrap(), "pull"], Option::None)
             ))
         }
         for child_pair in child_list {
@@ -70,10 +60,28 @@ pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {
     }
 }
 
-pub fn list(_matches: ArgMatches, settings_file: SettingsFile) {
+fn exec_git(args: Vec<&str>, io: Option<Stdio>) -> Child {
+    let io_option = match io {
+        Some(io) => io,
+        None => Stdio::null()
+    };
+
+    Command::new("git")
+        .args(args)
+        .stdout(io_option)
+        .spawn().unwrap()
+}
+
+pub fn list(matches: ArgMatches, settings_file: SettingsFile) {
     let repos = settings_file.list_repos();
+    let dirs_flag = matches.subcommand_matches("list")
+        .unwrap().is_present("list-dirs");
     for member in repos.members() {
-        println!("{}", member["name"].to_string());
+        if dirs_flag {
+            println!("name: {}\npath: {}\n", member["name"].to_string(), member["path"].to_string());
+        } else {
+            println!("{}", member["name"].to_string());
+        }
     }
 }
 
