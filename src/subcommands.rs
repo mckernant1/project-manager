@@ -139,11 +139,10 @@ pub fn cmd(matches: ArgMatches, settings_file: SettingsFile) {
 
     let cmd_to_run = repo_json["cmds"][cmd_name].clone().to_string();
 
-    println!("Executing: '{}' in '{}'", cmd_to_run, repo_json["path"].as_str().unwrap());
-
     if cmd_to_run == "null".to_string() {
         create_new_cmd(settings_file, cmd_name, repo_json.clone());
     } else {
+        println!("Executing: '{}' in '{}'", cmd_to_run, repo_json["path"].as_str().unwrap());
         let cmd_split: Vec<&str> = cmd_to_run
             .split(" ")
             .collect::<Vec<&str>>();
@@ -164,9 +163,8 @@ pub fn cmds(matches: ArgMatches, settings_file: SettingsFile) {
 
     let repo_json = settings_file.get_repo_by_name(repo_name);
     let title_string = format!("Commands for {}", repo_json["name"].as_str().unwrap());
-    println!("{}\n{}", title_string.to_uppercase(), (|| {
-        "#".repeat(title_string.len())
-    })());
+    println!("{}\n{}", title_string.to_uppercase(),
+        "#".repeat(title_string.len()));
 
     for member in repo_json["cmds"].entries() {
         let (name, cmd) = member;

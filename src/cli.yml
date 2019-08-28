@@ -1,7 +1,7 @@
 name: Project Manager
-version: 0.2.0
+version: 0.2.1
 author: Tom McKernan <tmeaglei@gmail.com>
-about: A global git manager
+about: A project manager for your computer
 subcommands:
   - clone:
       about: Clone repository to default directory
@@ -41,7 +41,7 @@ subcommands:
             required: true
             help: The name of the project to delete
   - cmd:
-      about: runs given shell script in project directory. If command doesnt exists you will be prompted for it.
+      about: runs given shell script in project directory. If command doesn't exist you will be prompted for it.
       args:
         - PROJ_NAME:
             required: true

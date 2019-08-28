@@ -43,7 +43,7 @@ impl SettingsFile {
             if repo["name"] != new_repo["name"] {
                 new_repos.push(repo.clone()).unwrap();
             } else {
-                new_repos.push(new_repo.clone());
+                new_repos.push(new_repo.clone()).unwrap();
             }
         }
 
