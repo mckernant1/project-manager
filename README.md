@@ -23,6 +23,10 @@ rm - removes a directory from the settings file
 pm rm project_manager
 pm rm -d project_manager # also deletes the directory
 ```
+cmds - lists commands for a specific project
+```bash
+pm cmds project_manager
+```
 cmd - runs a command for a specified project
 ```bash
 pm cmd project_manager build
