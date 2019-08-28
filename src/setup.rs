@@ -39,12 +39,18 @@ impl SettingsFile {
 
         let mut new_repos = array![];
 
+        let mut replace_flag = false;
         for repo in repos_mut["repos"].members() {
             if repo["name"] != new_repo["name"] {
                 new_repos.push(repo.clone()).unwrap();
             } else {
+                replace_flag = true;
                 new_repos.push(new_repo.clone()).unwrap();
             }
+        }
+
+        if !replace_flag {
+            new_repos.push(new_repo.clone()).unwrap();
         }
 
         repos_mut["repos"] = new_repos;
