@@ -14,6 +14,11 @@ list - lists all repos listed in the settings file
 ```bash
 pm list
 ```
+status - displays status of all repos or specific repo if specified
+```bash
+pm status project_manager
+```
+
 add - adds an existing repo to the settings file by path
 ```bash
 pm add .
@@ -43,8 +48,10 @@ you can then enter commands like `cargo build` or `npm run serve` these commands
   repos: [
     {
       name: "", // defaults to folder name
-      path: "", 
-      
+      path: "",
+      cmds: {
+        serve: "npm run serve"
+      } 
     } 
   ]
 
