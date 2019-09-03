@@ -21,7 +21,7 @@ pub fn clone(matches: ArgMatches, settings_file: SettingsFile) {
 
     let mut child = exec_git(
         vec!["clone", repo_string.as_str(), repo_dir.clone().as_str()],
-        Option::from(Stdio::piped()),
+        Option::from(Stdio::inherit()), Option::from(Stdio::inherit())
     );
     child.wait().unwrap();
     settings_file.clone().add_repo(object! {
@@ -42,7 +42,7 @@ pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {
             m["name"].to_string() == repo_name
         }).unwrap()["path"].to_string();
         println!("Pulling: {}", repo_name);
-        exec_git(vec!["-C", path.as_str(), "pull"], Option::None)
+        exec_git(vec!["-C", path.as_str(), "pull"], Option::None, Option::None)
             .wait().unwrap();
         println!("Done pulling: {}", repo_name)
     } else {
@@ -51,7 +51,7 @@ pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {
             println!("Pulling: {}", member["name"].clone().to_string());
             child_list.push((
                 member["name"].to_string(),
-                exec_git(vec!["-C", member["path"].as_str().unwrap(), "pull"], Option::None)
+                exec_git(vec!["-C", member["path"].as_str().unwrap(), "pull"], Option::None, Option::None)
             ))
         }
         for child_pair in child_list {
@@ -62,17 +62,7 @@ pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {
     }
 }
 
-fn exec_git(args: Vec<&str>, io: Option<Stdio>) -> Child {
-    let io_option = match io {
-        Some(io) => io,
-        None => Stdio::null()
-    };
 
-    Command::new("git")
-        .args(args)
-        .stdout(io_option)
-        .spawn().unwrap()
-}
 
 pub fn list(matches: ArgMatches, settings_file: SettingsFile) {
     let repos = settings_file.list_repos();
@@ -172,7 +162,6 @@ pub fn cmds(matches: ArgMatches, settings_file: SettingsFile) {
     }
 }
 
-
 fn create_new_cmd(settings_file: SettingsFile, cmd_name: &str, repo_json: JsonValue) {
     println!("This command does not exist.");
     print!("Please enter the command you want to run in this directory: ");
@@ -184,4 +173,58 @@ fn create_new_cmd(settings_file: SettingsFile, cmd_name: &str, repo_json: JsonVa
     repo_json_mut["cmds"][cmd_name] = cmd_string.replace("\n", "").into();
 
     settings_file.add_repo(repo_json_mut);
+}
+
+pub fn status(matches: ArgMatches, settings_file: SettingsFile) {
+    let repo_name = matches
+        .subcommand_matches("status").unwrap()
+        .value_of("PROJ_NAME");
+
+    match repo_name {
+        Some(name) => {
+            let repo_path = settings_file.get_repo_by_name(name)["path"].clone();
+            println!("Status of {} in {}", name, repo_path);
+            exec_git(
+                vec![
+                    "-C",
+                    repo_path.as_str().unwrap(),
+                    "status"
+                ],
+                Option::from(Stdio::inherit()),
+                Option::from(Stdio::inherit())
+            ).wait().unwrap();
+
+        },
+        None => {
+            let repos = settings_file.list_repos();
+            for member in repos.members() {
+                let path = member["path"].as_str().unwrap();
+                let name = member["name"].as_str().unwrap();
+                let print_string = format!("Status of {} in {}", name, path);
+                println!("{}\n", print_string);
+                exec_git(
+                    vec![
+                        "-C",
+                        path,
+                        "status"
+                    ],
+                    Option::from(Stdio::inherit()),
+                    Option::from(Stdio::inherit())
+                ).wait().unwrap();
+                println!("{}", "#".repeat(50));
+            }
+        }
+    };
+
+}
+
+fn exec_git(args: Vec<&str>, stdio: Option<Stdio>, stderr: Option<Stdio>) -> Child {
+    let stdio_option = stdio.unwrap_or(Stdio::null());
+    let stderr_option = stderr.unwrap_or(Stdio::null());
+
+    Command::new("git")
+        .args(args)
+        .stdout(stdio_option)
+        .stderr(stderr_option)
+        .spawn().unwrap()
 }

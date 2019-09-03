@@ -1,5 +1,5 @@
 name: Project Manager
-version: 0.2.2
+version: 0.3.0
 author: Tom McKernan <tmeaglei@gmail.com>
 about: A project manager for your computer
 subcommands:
@@ -41,7 +41,7 @@ subcommands:
             required: true
             help: The name of the project to delete
   - cmd:
-      about: runs given shell script in project directory. If command doesn't exist you will be prompted for it.
+      about: runs given command in project directory. If command doesn't exist you will be prompted for it.
       args:
         - PROJ_NAME:
             required: true
@@ -50,8 +50,14 @@ subcommands:
             required: true
             help: name of the command to run
   - cmds:
-      about: lists commands for a given project
+      about: Lists commands for a given project
       args:
         - PROJ_NAME:
             required: true
+            help: The name of the project
+  - status:
+      about: Displays the status of specified repo if none is provided, displays all
+      args:
+        - PROJ_NAME:
+            required: false
             help: The name of the project
