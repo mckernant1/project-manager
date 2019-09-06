@@ -5,6 +5,7 @@ use std::path::PathBuf;
 use std::fs;
 use std::io::{stdout, Write, stdin};
 use json::JsonValue;
+use spinners::{Spinner, Spinners};
 
 pub fn clone(matches: ArgMatches, settings_file: SettingsFile) {
     let repo_string = matches
@@ -47,18 +48,17 @@ pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {
         println!("Done pulling: {}", repo_name)
     } else {
         let mut child_list: Vec<_> = vec![];
+        let spinner = Spinner::new(Spinners::Dots, "Pulling all repos...".into());
         for member in repos.members() {
-            println!("Pulling: {}", member["name"].clone().to_string());
-            child_list.push((
-                member["name"].to_string(),
+            child_list.push(
                 exec_git(vec!["-C", member["path"].as_str().unwrap(), "pull"], Option::None, Option::None)
-            ))
+            )
         }
-        for child_pair in child_list {
-            let (child_name, mut child) = child_pair;
+        for mut child in child_list {
             child.wait().unwrap();
-            println!("Done pulling: {}", child_name)
         }
+        spinner.stop();
+        println!("\nDone!")
     }
 }
 
