@@ -42,6 +42,7 @@ you can then enter commands like `cargo build` or `npm run serve` these commands
 
 ### Todo
 - add start/stop commands to start/stop specified command in the background
+- figure out how to use bottles with custom taps
 
 ### Settings File Structure
 ##### Location: ($HOME/.gg.json)
