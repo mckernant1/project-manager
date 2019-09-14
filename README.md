@@ -45,7 +45,7 @@ you can then enter commands like `cargo build` or `npm run serve` these commands
 - figure out how to use bottles with custom taps
 
 ### Settings File Structure
-##### Location: ($HOME/.gg.json)
+##### Location: ($HOME/.pm.json)
 ```json5
 {
   // Defaults to $HOME/Desktop
