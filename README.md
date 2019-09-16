@@ -1,4 +1,5 @@
 # Project Manager 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/cba71a4e61d9462f8716a5ad05414888)](https://www.codacy.com/manual/mckernant1/project_manager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mckernant1/project_manager&amp;utm_campaign=Badge_Grade)
 This is a git repo manager
 
 ### Commands
