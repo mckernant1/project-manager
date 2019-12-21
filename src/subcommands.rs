@@ -51,11 +51,16 @@ pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {
         let spinner = Spinner::new(Spinners::Dots, "Pulling all repos...".into());
         for member in repos.members() {
             child_list.push(
+                (member["path"].as_str().unwrap(),
                 exec_git(vec!["-C", member["path"].as_str().unwrap(), "pull"], Option::None, Option::None)
+                )
             )
         }
-        for mut child in child_list {
-            child.wait().unwrap();
+        for (path, mut child) in child_list {
+            let exit_status = child.wait().unwrap();
+            if !exit_status.success() {
+                eprintln!("\n{} has failed with status {}", path, exit_status.code().unwrap());
+            }
         }
         spinner.stop();
         println!("\nDone!")
