@@ -33,11 +33,10 @@ pub fn clone(matches: ArgMatches, settings_file: SettingsFile) {
 
 pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {
     let repos = settings_file.list_repos();
+    let subcommand_matches = matches.subcommand_matches("pull").unwrap();
 
-    if matches.subcommand_matches("pull").unwrap()
-        .is_present("PROJ_NAME") {
-        let repo_name = matches
-            .subcommand_matches("pull").unwrap()
+    if subcommand_matches.is_present("PROJ_NAME") {
+        let repo_name = subcommand_matches
             .value_of("NAME").unwrap();
         let path = repos.members().find(|m| {
             m["name"].to_string() == repo_name
@@ -108,11 +107,12 @@ pub fn add(matches: ArgMatches, settings_file: SettingsFile) {
 }
 
 pub fn delete(matches: ArgMatches, settings_file: SettingsFile) {
-    let repo_name = matches
-        .subcommand_matches("rm").unwrap()
+    let subcommand_matches = matches
+        .subcommand_matches("rm").unwrap();
+    let repo_name = subcommand_matches
         .value_of("PROJ_NAME").unwrap();
 
-    if matches.subcommand_matches("rm").unwrap()
+    if subcommand_matches
         .is_present("remove-dir") {
         let repo = settings_file.clone().get_repo_by_name(repo_name);
         let repo_path = repo["path"].as_str().unwrap();
@@ -123,12 +123,15 @@ pub fn delete(matches: ArgMatches, settings_file: SettingsFile) {
 }
 
 pub fn cmd(matches: ArgMatches, settings_file: SettingsFile) {
-    let repo_name = matches
-        .subcommand_matches("cmd").unwrap()
+    let subcommand_matches = matches
+        .subcommand_matches("cmd").unwrap();
+
+    let repo_name = subcommand_matches
         .value_of("PROJ_NAME").unwrap();
-    let cmd_name = matches
-        .subcommand_matches("cmd").unwrap()
+    let cmd_name = subcommand_matches
         .value_of("CMD_NAME").unwrap();
+    let display_output = !subcommand_matches
+        .is_present("disable-output");
 
     let repo_json = settings_file.clone().get_repo_by_name(repo_name);
 
@@ -146,6 +149,12 @@ pub fn cmd(matches: ArgMatches, settings_file: SettingsFile) {
         Command::new(cmd)
             .current_dir(repo_json["path"].as_str().unwrap())
             .args(cmd_args)
+            .stdout(
+                if display_output { Stdio::inherit() } else { Stdio::null() }
+            )
+            .stderr(
+                if display_output { Stdio::inherit() } else { Stdio::null() }
+            )
             .spawn().unwrap()
             .wait().unwrap();
     }

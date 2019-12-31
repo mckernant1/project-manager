@@ -1,5 +1,5 @@
 name: Project Manager
-version: 0.3.1
+version: 0.3.2
 author: Tom McKernan <tmeaglei@gmail.com>
 about: A project manager for your computer
 subcommands:
@@ -19,7 +19,7 @@ subcommands:
       about: list all of the directories managed by global git
       args:
         - list-dirs:
-            short: -l
+            short: l
             long: list-dirs
             help: also gives the directories of git repos
             takes_value: false
@@ -43,6 +43,11 @@ subcommands:
   - cmd:
       about: runs given command in project directory. If command doesn't exist you will be prompted for it.
       args:
+        - disable-output:
+            short: d
+            long: disable-output
+            help: disables the output of the command
+            takes_value: false
         - PROJ_NAME:
             required: true
             help: The name of the project
