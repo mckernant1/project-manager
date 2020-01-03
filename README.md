@@ -1,14 +1,21 @@
 # Project Manager 
 This is a git repo manager
 
+### Install
+Install via homebrew
+```bash
+brew tap mckernant1/tools
+brew install project-manager
+```
+
 ### Commands
 clone - clones a repo to the default directory
 ```bash
-pm clone git@github.com:mckernant1/project_manager.git
+pm clone git@github.com:mckernant1/project-manager.git
 ```
 pull - pulls all repos, or a specific repo if specified
 ```bash
-pm pull project_manager
+pm pull project-manager
 ```
 list - lists all repos listed in the settings file
 ```bash
@@ -16,7 +23,7 @@ pm list
 ```
 status - displays status of all repos or specific repo if specified
 ```bash
-pm status project_manager
+pm status project-manager
 ```
 
 add - adds an existing repo to the settings file by path
@@ -25,16 +32,16 @@ pm add .
 ```
 rm - removes a directory from the settings file
 ```bash
-pm rm project_manager
+pm rm project-manager
 pm rm -d project_manager # also deletes the directory
 ```
 cmds - lists commands for a specific project
 ```bash
-pm cmds project_manager
+pm cmds project-manager
 ```
 cmd - runs a command for a specified project
 ```bash
-pm cmd project_manager build
+pm cmd project-manager build
 ```
 If the command does not exist. It will prompt you for it.
 you can then enter commands like `cargo build` or `npm run serve` these commands will be executed in the projects directory. Gradle is weird and doesnt work when running from a remote directory, so you may have to add a shell script in your gradle directory to run with `sh myscript.sh`
