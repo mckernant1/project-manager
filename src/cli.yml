@@ -18,10 +18,10 @@ subcommands:
   - list:
       about: list all of the directories managed by global git
       args:
-        - list-dirs:
-            short: l
-            long: list-dirs
-            help: also gives the directories of git repos
+        - plain:
+            short: p
+            long: plain
+            help: lists just the projects by name with no directories
             takes_value: false
   - add:
       about: Add a directory to the list maintained by global-git

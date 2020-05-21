@@ -70,11 +70,14 @@ pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {
 
 pub fn list(matches: ArgMatches, settings_file: SettingsFile) {
     let repos = settings_file.list_repos();
-    let dirs_flag = matches.subcommand_matches("list")
-        .unwrap().is_present("list-dirs");
+    let plain_flag = matches.subcommand_matches("list")
+        .unwrap().is_present("plain");
     for member in repos.members() {
-        if dirs_flag {
-            println!("name: {}\npath: {}\n", member["name"].to_string(), member["path"].to_string());
+        if ! plain_flag {
+            println!("{} -> {}",
+                     member["name"].to_string(),
+                     member["path"].to_string()
+            );
         } else {
             println!("{}", member["name"].to_string());
         }
