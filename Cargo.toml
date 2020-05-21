@@ -1,6 +1,6 @@
 [package]
 name = "pm"
-version = "0.3.3"
+version = "0.3.4"
 authors = ["Tom McKernan <tmeaglei@gmail.com>"]
 edition = "2018"
 
