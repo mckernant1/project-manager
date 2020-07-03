@@ -15,7 +15,7 @@ subcommands:
         - PROJ_NAME:
             required: false
             help: The name of the project
-  - list:
+  - ls:
       about: list all of the directories managed by global git
       args:
         - plain:
