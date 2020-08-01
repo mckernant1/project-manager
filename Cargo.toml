@@ -1,10 +1,17 @@
 [package]
-name = "pm"
-version = "0.3.4"
+name = "project-manager"
+version = "0.3.5"
 authors = ["Tom McKernan <tmeaglei@gmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+build = "build.rs"
+
+[build-dependencies]
+clap = {version = "~2.33.0", features = ["yaml", "color"]}
+
+[dev-dependencies]
+rusty-hook = "^0.11.2"
 
 [dependencies]
 clap = {version = "~2.33.0", features = ["yaml", "color"]}

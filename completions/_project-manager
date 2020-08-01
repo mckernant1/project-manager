@@ -1,0 +1,201 @@
+#compdef project-manager
+
+autoload -U is-at-least
+
+_project-manager() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_project-manager_commands" \
+"*::: :->Project Manager" \
+&& ret=0
+    case $state in
+    (Project Manager)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:project-manager-command-$line[1]:"
+        case $line[1] in
+            (clone)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+':LINK -- The repo to clone:_files' \
+&& ret=0
+;;
+(pull)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::PROJ_NAME -- The name of the project:_files' \
+&& ret=0
+;;
+(ls)
+_arguments "${_arguments_options[@]}" \
+'-p[lists just the projects by name with no directories]' \
+'--plain[lists just the projects by name with no directories]' \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+(add)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+':PATH -- The directory of the git repo to add:_files' \
+&& ret=0
+;;
+(rm)
+_arguments "${_arguments_options[@]}" \
+'-d[delete the directory specified]' \
+'--remove-dir[delete the directory specified]' \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+':PROJ_NAME -- The name of the project to delete:_files' \
+&& ret=0
+;;
+(cmd)
+_arguments "${_arguments_options[@]}" \
+'-d[disables the output of the command]' \
+'--disable-output[disables the output of the command]' \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+':PROJ_NAME -- The name of the project:_files' \
+':CMD_NAME -- name of the command to run:_files' \
+&& ret=0
+;;
+(cmds)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+':PROJ_NAME -- The name of the project:_files' \
+&& ret=0
+;;
+(status)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::PROJ_NAME -- The name of the project:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+}
+
+(( $+functions[_project-manager_commands] )) ||
+_project-manager_commands() {
+    local commands; commands=(
+        "clone:Clone repository to default directory" \
+"pull:Pulls the specific repo by name. No name pulls all repos" \
+"ls:list all of the directories managed by global git" \
+"add:Add a directory to the list maintained by global-git" \
+"rm:remove the repo from the list maintained by global git" \
+"cmd:runs given command in project directory. If command doesn't exist you will be prompted for it." \
+"cmds:Lists commands for a given project" \
+"status:Displays the status of specified repo if none is provided, displays all" \
+"help:Prints this message or the help of the given subcommand(s)" \
+    )
+    _describe -t commands 'project-manager commands' commands "$@"
+}
+(( $+functions[_project-manager__add_commands] )) ||
+_project-manager__add_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'project-manager add commands' commands "$@"
+}
+(( $+functions[_project-manager__clone_commands] )) ||
+_project-manager__clone_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'project-manager clone commands' commands "$@"
+}
+(( $+functions[_project-manager__cmd_commands] )) ||
+_project-manager__cmd_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'project-manager cmd commands' commands "$@"
+}
+(( $+functions[_project-manager__cmds_commands] )) ||
+_project-manager__cmds_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'project-manager cmds commands' commands "$@"
+}
+(( $+functions[_project-manager__help_commands] )) ||
+_project-manager__help_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'project-manager help commands' commands "$@"
+}
+(( $+functions[_project-manager__ls_commands] )) ||
+_project-manager__ls_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'project-manager ls commands' commands "$@"
+}
+(( $+functions[_project-manager__pull_commands] )) ||
+_project-manager__pull_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'project-manager pull commands' commands "$@"
+}
+(( $+functions[_project-manager__rm_commands] )) ||
+_project-manager__rm_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'project-manager rm commands' commands "$@"
+}
+(( $+functions[_project-manager__status_commands] )) ||
+_project-manager__status_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'project-manager status commands' commands "$@"
+}
+
+_project-manager "$@"

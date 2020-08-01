@@ -1,5 +1,5 @@
 name: Project Manager
-version: 0.3.4
+version: 0.3.5
 author: Tom McKernan <tmeaglei@gmail.com>
 about: A project manager for your computer
 subcommands:
