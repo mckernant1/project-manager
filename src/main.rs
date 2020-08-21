@@ -3,12 +3,19 @@ extern crate clap;
 #[macro_use]
 extern crate json;
 
-mod setup;
 mod subcommands;
+mod setup;
+
 
 use clap::{App, AppSettings, ArgMatches};
-use subcommands::{pull, list, add, delete, clone, cmd, cmds, status};
 use setup::SettingsFile;
+use crate::subcommands::clone::clone;
+use crate::subcommands::pull::pull;
+use crate::subcommands::list::list;
+use crate::subcommands::add::add;
+use crate::subcommands::delete::delete;
+use crate::subcommands::cmd::{cmd, cmds};
+use crate::subcommands::status::status;
 
 
 fn main() {
