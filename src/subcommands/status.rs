@@ -1,4 +1,5 @@
 use clap::ArgMatches;
+use crate::subcommands::util::exec_git;
 use crate::setup::SettingsFile;
 use std::process::Stdio;
 

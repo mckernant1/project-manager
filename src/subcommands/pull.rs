@@ -1,5 +1,6 @@
 use clap::ArgMatches;
 use crate::setup::SettingsFile;
+use crate::subcommands::util::exec_git;
 use spinners::{Spinner, Spinners};
 
 pub fn pull(matches: ArgMatches, settings_file: SettingsFile) {

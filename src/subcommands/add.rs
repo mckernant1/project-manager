@@ -1,6 +1,8 @@
 use clap::ArgMatches;
 use crate::setup::SettingsFile;
+
 use std::fs;
+use std::path::PathBuf;
 
 pub fn add(matches: ArgMatches, settings_file: SettingsFile) {
     let path_string =

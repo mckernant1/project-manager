@@ -1,5 +1,6 @@
 use clap::ArgMatches;
 use crate::setup::SettingsFile;
+use crate::subcommands::util::exec_git;
 use std::process::Stdio;
 
 pub fn clone(matches: ArgMatches, settings_file: SettingsFile) {
