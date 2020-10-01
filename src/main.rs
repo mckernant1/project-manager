@@ -14,7 +14,6 @@ use crate::subcommands::pull::pull;
 use crate::subcommands::list::list;
 use crate::subcommands::add::add;
 use crate::subcommands::delete::delete;
-use crate::subcommands::cmd::{cmd, cmds};
 use crate::subcommands::status::status;
 
 
@@ -38,10 +37,6 @@ fn call_subcommands(matches: ArgMatches, settings_file: SettingsFile) {
         add(matches, settings_file)
     } else if matches.is_present("rm") {
         delete(matches, settings_file)
-    } else if matches.is_present("cmd") {
-        cmd(matches, settings_file)
-    } else if matches.is_present("cmds") {
-        cmds(matches, settings_file)
     } else if matches.is_present("status") {
         status(matches, settings_file)
     }

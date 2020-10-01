@@ -40,26 +40,6 @@ subcommands:
         - PROJ_NAME:
             required: true
             help: The name of the project to delete
-  - cmd:
-      about: runs given command in project directory. If command doesn't exist you will be prompted for it.
-      args:
-        - disable-output:
-            short: d
-            long: disable-output
-            help: disables the output of the command
-            takes_value: false
-        - PROJ_NAME:
-            required: true
-            help: The name of the project
-        - CMD_NAME:
-            required: true
-            help: name of the command to run
-  - cmds:
-      about: Lists commands for a given project
-      args:
-        - PROJ_NAME:
-            required: true
-            help: The name of the project
   - status:
       about: Displays the status of specified repo if none is provided, displays all
       args:

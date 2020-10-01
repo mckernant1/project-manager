@@ -76,27 +76,6 @@ _arguments "${_arguments_options[@]}" \
 ':PROJ_NAME -- The name of the project to delete:_files' \
 && ret=0
 ;;
-(cmd)
-_arguments "${_arguments_options[@]}" \
-'-d[disables the output of the command]' \
-'--disable-output[disables the output of the command]' \
-'-h[Prints help information]' \
-'--help[Prints help information]' \
-'-V[Prints version information]' \
-'--version[Prints version information]' \
-':PROJ_NAME -- The name of the project:_files' \
-':CMD_NAME -- name of the command to run:_files' \
-&& ret=0
-;;
-(cmds)
-_arguments "${_arguments_options[@]}" \
-'-h[Prints help information]' \
-'--help[Prints help information]' \
-'-V[Prints version information]' \
-'--version[Prints version information]' \
-':PROJ_NAME -- The name of the project:_files' \
-&& ret=0
-;;
 (status)
 _arguments "${_arguments_options[@]}" \
 '-h[Prints help information]' \
@@ -127,8 +106,6 @@ _project-manager_commands() {
 "ls:list all of the directories managed by global git" \
 "add:Add a directory to the list maintained by global-git" \
 "rm:remove the repo from the list maintained by global git" \
-"cmd:runs given command in project directory. If command doesn't exist you will be prompted for it." \
-"cmds:Lists commands for a given project" \
 "status:Displays the status of specified repo if none is provided, displays all" \
 "help:Prints this message or the help of the given subcommand(s)" \
     )
@@ -147,20 +124,6 @@ _project-manager__clone_commands() {
         
     )
     _describe -t commands 'project-manager clone commands' commands "$@"
-}
-(( $+functions[_project-manager__cmd_commands] )) ||
-_project-manager__cmd_commands() {
-    local commands; commands=(
-        
-    )
-    _describe -t commands 'project-manager cmd commands' commands "$@"
-}
-(( $+functions[_project-manager__cmds_commands] )) ||
-_project-manager__cmds_commands() {
-    local commands; commands=(
-        
-    )
-    _describe -t commands 'project-manager cmds commands' commands "$@"
 }
 (( $+functions[_project-manager__help_commands] )) ||
 _project-manager__help_commands() {

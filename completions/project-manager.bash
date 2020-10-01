@@ -19,12 +19,6 @@ _project-manager() {
             clone)
                 cmd+="__clone"
                 ;;
-            cmd)
-                cmd+="__cmd"
-                ;;
-            cmds)
-                cmd+="__cmds"
-                ;;
             help)
                 cmd+="__help"
                 ;;
@@ -47,7 +41,7 @@ _project-manager() {
 
     case "${cmd}" in
         project-manager)
-            opts=" -h -V  --help --version   clone pull ls add rm cmd cmds status help"
+            opts=" -h -V  --help --version   clone pull ls add rm status help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -79,36 +73,6 @@ _project-manager() {
             ;;
         project__manager__clone)
             opts=" -h -V  --help --version  <LINK> "
-            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
-                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-                return 0
-            fi
-            case "${prev}" in
-                
-                *)
-                    COMPREPLY=()
-                    ;;
-            esac
-            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-            return 0
-            ;;
-        project__manager__cmd)
-            opts=" -d -h -V  --disable-output --help --version  <PROJ_NAME> <CMD_NAME> "
-            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
-                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-                return 0
-            fi
-            case "${prev}" in
-                
-                *)
-                    COMPREPLY=()
-                    ;;
-            esac
-            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-            return 0
-            ;;
-        project__manager__cmds)
-            opts=" -h -V  --help --version  <PROJ_NAME> "
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
