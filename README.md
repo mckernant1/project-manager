@@ -35,21 +35,8 @@ rm - removes a directory from the settings file
 pm rm project-manager
 pm rm -d project_manager # also deletes the directory
 ```
-cmds - lists commands for a specific project
-```bash
-pm cmds project-manager
-```
-cmd - runs a command for a specified project
-```bash
-pm cmd project-manager build
-```
-If the command does not exist. It will prompt you for it.
-you can then enter commands like `cargo build` or `npm run serve` these commands will be executed in the projects directory. Gradle is weird and doesnt work when running from a remote directory, so you may have to add a shell script in your gradle directory to run with `sh myscript.sh`
-
 
 ### Todo
-- add start/stop commands to start/stop specified command in the background
-- figure out how to use bottles with custom taps
 - add a rename command
 
 ### Settings File Structure
@@ -61,10 +48,7 @@ you can then enter commands like `cargo build` or `npm run serve` these commands
   repos: [
     {
       name: "", // defaults to folder name
-      path: "",
-      cmds: {
-        serve: "npm run serve"
-      } 
+      path: ""
     } 
   ]
 
